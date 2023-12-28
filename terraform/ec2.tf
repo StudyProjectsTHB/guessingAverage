@@ -6,6 +6,11 @@ data "template_file" "user_data" {
   }
 }
 
+resource "aws_key_pair" "guessingAverage_key_pair"{
+  key_name = "guessingAverage_key"
+    public_key = var.credentials["public_key"]
+}
+
 resource "aws_launch_template" "webserver-lt" {
   name          = "tf-webserver-lt"
 
@@ -14,7 +19,7 @@ resource "aws_launch_template" "webserver-lt" {
   instance_type = "t2.micro"
 
   vpc_security_group_ids = [aws_security_group.webserver_w_lb.id]
-  key_name = "IaC_20231006"
+  key_name = aws_key_pair.guessingAverage_key_pair.key_name
   user_data = base64encode(data.template_file.user_data.rendered)
 }
 

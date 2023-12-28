@@ -18,5 +18,5 @@ variable "num_private_subnets" {
 }
 
 variable "credentials" {
- type = map(string)  # keys: "access_key", "secret_key", "token", "db_password"
+ type = map(string)  # keys: "access_key", "secret_key", "token", "db_password", "public_key"
 }
