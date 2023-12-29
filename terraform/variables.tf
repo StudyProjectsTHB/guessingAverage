@@ -17,6 +17,12 @@ variable "num_private_subnets" {
  default = 2
 }
 
+variable "db_name" {
+ description = "Name of DB"
+ type = string
+ default = "guessingAverage"
+}
+
 variable "credentials" {
- type = map(string)  # keys: "access_key", "secret_key", "token", "db_password", "public_key"
+ type = map(string)  # keys: "access_key", "secret_key", "token", "db_password", "db_user", "public_key_file"
 }

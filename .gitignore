@@ -38,3 +38,5 @@ build/
 *.terraform*
 *.tfstate
 *.tfstate*
+*_saved_key
+*.ppk
