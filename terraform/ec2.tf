@@ -29,6 +29,7 @@ resource "aws_autoscaling_group" "webserver-asg" {
   max_size             = 3
   min_size             = 1
   vpc_zone_identifier  = [for i in range(var.num_public_subnets) : aws_subnet.public_subnet[i].id]
+  default_cooldown = 150
 
   launch_template {
     id      = aws_launch_template.webserver-lt.id
@@ -40,6 +41,7 @@ resource "aws_autoscaling_group" "webserver-asg" {
     strategy = "Rolling"
     preferences {
       min_healthy_percentage = 50
+      instance_warmup        = 150
     }
   }
 }
