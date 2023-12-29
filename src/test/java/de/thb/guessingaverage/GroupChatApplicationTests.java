@@ -194,6 +194,9 @@ class NumberEntryControllerTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private NumberEntryRepository numberEntryRepository;
+
     @Test
     void test_is_there_a_webpage() {
         ResponseEntity<String> response = restTemplate.getForEntity("/", String.class);
@@ -213,6 +216,7 @@ class NumberEntryControllerTests {
         form.setNumber(number);
         ResponseEntity<String> response = restTemplate.postForEntity("/", form, String.class);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode(), "The web page should be available.");
+        numberEntryRepository.delete(numberEntryRepository.findTopByOrderByIdDesc());
     }
 
     @Test
