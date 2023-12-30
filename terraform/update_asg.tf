@@ -1,6 +1,6 @@
 data "archive_file" "github_webhook_lambda_payload" {
   type = "zip"
-  source_file = "${path.module}/user_data_files/github_webhook_lambda_skript.py"
+  source_file = "${path.module}/user_data_files/github_webhook_lambda_script.py"
   output_path = "${path.module}/user_data_files/github_webhook_lambda_payload.zip"
 }
 
@@ -9,21 +9,20 @@ data "aws_iam_role" "vocareum_lab_lambda_role" {
 }
 
 resource "aws_lambda_function" "github_webhook_lambda" {
-
   function_name = "GitHubWebhook"
   description = "GitHub Webhook"
-  handler = "github_webhook_lambda_skript.lambda_handler"
+  handler = "github_webhook_lambda_script.lambda_handler"
   role = data.aws_iam_role.vocareum_lab_lambda_role.arn
   filename = "${path.module}/user_data_files/github_webhook_lambda_payload.zip"
   source_code_hash = "${data.archive_file.github_webhook_lambda_payload.output_base64sha256}"
   runtime = "python3.12"
   timeout = 5
 
-    environment {
-        variables = {
-            asg_name = aws_autoscaling_group.webserver-asg.name
-        }
-    }
+  environment {
+      variables = {
+          asg_name = aws_autoscaling_group.webserver-asg.name
+      }
+  }
 
 }
 
@@ -33,18 +32,18 @@ resource "aws_apigatewayv2_api" "github_webhook_api_gateway" {
 }
 
 resource "aws_apigatewayv2_route" "github_webhook_route" {
-    api_id    = aws_apigatewayv2_api.github_webhook_api_gateway.id
-    route_key = "POST /${var.github_webhook_route}"
+  api_id    = aws_apigatewayv2_api.github_webhook_api_gateway.id
+  route_key = "POST /${var.github_webhook_route}"
 
-    target = "integrations/${aws_apigatewayv2_integration.github_webhook_integration.id}"
+  target = "integrations/${aws_apigatewayv2_integration.github_webhook_integration.id}"
 }
 
 resource "aws_apigatewayv2_integration" "github_webhook_integration" {
-    api_id = aws_apigatewayv2_api.github_webhook_api_gateway.id
-    integration_type = "AWS_PROXY"
-    integration_method = "POST"
-    payload_format_version = "2.0"
-    integration_uri = aws_lambda_function.github_webhook_lambda.invoke_arn
+  api_id = aws_apigatewayv2_api.github_webhook_api_gateway.id
+  integration_type = "AWS_PROXY"
+  integration_method = "POST"
+  payload_format_version = "2.0"
+  integration_uri = aws_lambda_function.github_webhook_lambda.invoke_arn
 }
 
 resource "aws_apigatewayv2_stage" "github_webhook_stage" {
