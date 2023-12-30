@@ -61,7 +61,7 @@ mvn spring-boot:run
    + github_token: Your [GitHub token](https://github.com/settings/tokens/new), it must have the scope "admin:repo_hook"
    + github_repository: The repository where the webhook will be created, it is already set to "guessingAverage"
    + github_repository_owner: The owner of the repository, it is already set to "eineOrganisation"
-   + github_webhook_secret: The secret for the webhook (not implemented yet, maybe available in th future)
+   + github_webhook_secret: The secret for the webhook (not implemented yet, maybe available in the future)
 
 5. Move into the terraform directory
    ```shell
