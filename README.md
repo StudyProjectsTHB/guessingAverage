@@ -90,3 +90,8 @@ mvn spring-boot:run
    
 ## Features
 + Maybe later idk
+
+## TODO
++ AMI for launch configuration
++ GitHub Webhook Secret
++ Exception Handing for Webhook Lambda
