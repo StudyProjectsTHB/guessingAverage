@@ -15,9 +15,6 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install docker-ce docker-ce-cli containerd.io -y
 
-sudo aws configure set aws_access_key_id ${aws_access_key_id}
-sudo aws configure set aws_secret_access_key ${aws_secret_access_key}
-sudo aws configure set aws_session_token ${aws_session_token}
 sudo aws configure set region ${aws_region}
 
 secret_value=$(aws secretsmanager get-secret-value --secret-id ${secret_name} --query SecretString --output text)

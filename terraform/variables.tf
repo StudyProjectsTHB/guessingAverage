@@ -23,6 +23,16 @@ variable "db_name" {
  default = "guessingAverage"
 }
 
-variable "credentials" {
- type = map(string)  # keys: "access_key", "secret_key", "token", "db_password", "db_user", "public_key_file"
+variable "github_webhook_route" {
+ description = "Route for API Gateway to use for GitHub Webhook"
+ type = string
+ default = "github-webhook"
+}
+
+variable "aws_credentials" {
+ type = map(string)  # keys: "access_key", "secret_key", "token", "db_password", "db_user", "public_key_file", "public_key"
+}
+
+variable "github_credentials" {
+ type = map(string)  # keys: "token", "repository", "owner"
 }
