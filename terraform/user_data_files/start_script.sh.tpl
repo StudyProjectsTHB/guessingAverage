@@ -15,7 +15,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install docker-ce docker-ce-cli containerd.io -y
 
-sudo aws configure set region ${aws_region}
+aws configure set region ${aws_region}
 
 secret_value=$(aws secretsmanager get-secret-value --secret-id ${secret_name} --query SecretString --output text)
 db_host=$(echo "$secret_value" | awk -F'"host":' '{print $2}' | awk -F'"' '{print $2}')

@@ -13,7 +13,7 @@ data "aws_iam_instance_profile" "vocareum_lab_instance_profile" {
 resource "aws_key_pair" "guessingAverage_key_pair"{
   key_name = "guessingAverage_key"
 #  public_key = file(var.credentials["public_key_file"])
-  public_key = var.aws_credentials["public_key"]
+  public_key = var.aws_credentials["aws_ec2_public_key"]
 }
 
 resource "aws_launch_template" "webserver-lt" {

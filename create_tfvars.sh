@@ -8,18 +8,19 @@ if [ -f "$FilePath" ]; then
 else
     cat > "$FilePath" <<EOF
 aws_credentials = {
-  "access_key": "YOUR_AWS_ACCESS_KEY_ID",
-  "secret_key": "YOUR_AWS_SECRET_ACCESS_KEY",
-  "token": "YOUR_AWS_SESSION_TOKEN",
-  "db_password": "DB_PASSWORD",
-  "db_user": "DB_USER",
-  "public_key": "ssh-rsa YOUR_PUBLIC_KEY",
+  "aws_access_key_id": "YOUR_AWS_ACCESS_KEY_ID",
+  "aws_secret_access_key": "YOUR_AWS_SECRET_ACCESS_KEY",
+  "aws_session_token": "YOUR_AWS_SESSION_TOKEN",
+  "aws_db_password": "DB_PASSWORD",
+  "aws_db_user": "DB_USER",
+  "aws_ec2_public_key": "ssh-rsa YOUR_PUBLIC_KEY",
 }
 
 github_credentials = {
-  "token": "YOUR_GITHUB_TOKEN",
-  "repository": "guessingAverage",
-  "owner": "eineOrganisation",
+  "github_token": "YOUR_GITHUB_TOKEN",
+  "github_repository": "guessingAverage",
+  "github_repository_owner": "eineOrganisation",
+  "github_webhook_secret": "THE_SECRET_FOR_THE_WEBHOOK",
 }
 EOF
     echo "created $FilePath."

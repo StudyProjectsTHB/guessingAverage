@@ -1,5 +1,5 @@
 data "github_repository" "guessingAverage_repository" {
-  name = var.github_credentials["repository"]
+  name = var.github_credentials["github_repository"]
 }
 
 resource "github_repository_webhook" "api_gateway_github_webhook" {
