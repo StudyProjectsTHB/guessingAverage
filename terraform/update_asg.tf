@@ -12,7 +12,7 @@ resource "aws_lambda_function" "github_webhook_lambda" {
 
   function_name = "GitHubWebhook"
   description = "GitHub Webhook"
-  handler = "lambda.lambda_handler"
+  handler = "github_webhook_lambda_skript.lambda_handler"
   role = data.aws_iam_role.vocareum_lab_lambda_role.arn
   filename = "${path.module}/user_data_files/github_webhook_lambda_payload.zip"
   source_code_hash = "${data.archive_file.github_webhook_lambda_payload.output_base64sha256}"
