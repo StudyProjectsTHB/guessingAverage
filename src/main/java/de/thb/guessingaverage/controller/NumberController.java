@@ -37,7 +37,7 @@ public class NumberController {
         model.addAttribute("properties", properties);
         model.addAttribute("number", form.getNumber());
 
-        if(numberEntryService.getTotalNumberOfNumberEntries() % properties.getRandomNumbersFrequency() == 0){
+        if(properties.getRandomNumbersFrequency() != 0 && (numberEntryService.getTotalNumberOfNumberEntries() % properties.getRandomNumbersFrequency()) == 0){
             numberEntryService.createRandomNumberOfRandomEntries(properties.getMinNumber(), properties.getMaxNumber(), properties.getMinValue(), properties.getMaxValue());
             model.addAttribute("newNumbersAdded", true);
         }

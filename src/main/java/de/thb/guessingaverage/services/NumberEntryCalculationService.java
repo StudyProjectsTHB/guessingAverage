@@ -19,6 +19,7 @@ public class NumberEntryCalculationService {
         for (NumberEntry entry : numberEntryList) {
             sum += entry.getNumber();
         }
+
         return sum / numberEntryList.size();
     }
 
