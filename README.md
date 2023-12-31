@@ -8,6 +8,7 @@
 ### Build Locally
 * Java 17
 * Maven 4.0.0
+* PostgreSQL datavase
 
 ### Deploy to AWS
 * Terraform 1.6.0
@@ -22,9 +23,9 @@ git clone https://github.com/eineOrganisation/guessingAverage.git
 ```shell
 mvn clean install
 ```
-3. Run the project
+3. Set enviroment variables DATABASE_HOST, DATABASE_NAME, DATABASE_USER and DATABASE_PASSWORD
+4. Run the project
 ```shell
-# Just don't do it. It won't work anyway. (No access to a PostgreSQL database)
 mvn spring-boot:run
 ```
 
