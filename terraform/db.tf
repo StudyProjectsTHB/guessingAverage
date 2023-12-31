@@ -8,11 +8,28 @@ resource "aws_db_instance" "postgres_instance" {
   allocated_storage     = 20
   engine                = "postgres"
   instance_class        = "db.t3.micro"
-  db_name               = "mydatabase"
-  username              = "postgres"
-  password              = var.credentials["db_password"]
+  db_name               = var.db_name
+  username              = var.aws_credentials["aws_db_user"]
+  password              = var.aws_credentials["aws_db_password"]
   db_subnet_group_name  = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids = [aws_security_group.postgres_sg.id]
   multi_az              = true
   skip_final_snapshot   = true
+}
+
+resource "aws_secretsmanager_secret" "db_secret" {
+  name = "tf-secret_manager"
+  recovery_window_in_days = 0
+}
+
+resource "aws_secretsmanager_secret_version" "db_secret" {
+  secret_id     = aws_secretsmanager_secret.db_secret.id
+  secret_string = <<EOT
+                  {
+                    "host": "${aws_db_instance.postgres_instance.address}",
+                    "db_name": "${var.db_name}",
+                    "username": "${var.aws_credentials["aws_db_user"]}",
+                    "password": "${var.aws_credentials["aws_db_password"]}"
+                  }
+                  EOT
 }

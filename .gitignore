@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+*.db
 
 ### STS ###
 .apt_generated
@@ -38,3 +39,6 @@ build/
 *.terraform*
 *.tfstate
 *.tfstate*
+*_saved_key
+*.ppk
+*.zip
