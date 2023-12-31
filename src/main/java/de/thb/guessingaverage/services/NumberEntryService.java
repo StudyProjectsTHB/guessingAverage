@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import de.thb.guessingaverage.entities.NumberEntry;
+
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,14 +44,15 @@ public class NumberEntryService {
     }
 
     public NumberEntry generateRandomNumberEntry(float minValue, float maxValue){
-        float randomValue = (float) (minValue + Math.random() * (maxValue - minValue));
+        SecureRandom secureRandom = new SecureRandom();
+        float randomValue = minValue + secureRandom.nextFloat() * (maxValue - minValue);
         return new NumberEntry(LocalDateTime.now(), randomValue);
     }
 
     public List<NumberEntry> createRandomNumberOfRandomEntries(int minNumber, int maxNumber, float minValue, float maxValue){
         List<NumberEntry> numberEntries = new LinkedList<NumberEntry>();
 
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
 
         int randomNumber = random.nextInt(maxNumber + 1 - minNumber) + minNumber;
 
