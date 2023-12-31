@@ -88,11 +88,8 @@ mvn spring-boot:run
    ```shell
    terraform destroy --auto-approve
    ```
-   
-## Features
-+ Maybe later idk
 
-## TODO
+## Next Steps
 + AMI for launch configuration
 + GitHub Webhook Secret
 + Exception Handing for Webhook Lambda
