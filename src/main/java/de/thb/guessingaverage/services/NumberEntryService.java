@@ -14,10 +14,16 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-@AllArgsConstructor
 public class NumberEntryService {
     private final NumberEntryCalculationService numberEntryCalculationService;
     private final NumberEntryRepository numberEntryRepository;
+    private final SecureRandom random;
+
+    public NumberEntryService(NumberEntryCalculationService numberEntryCalculationService, NumberEntryRepository numberEntryRepository){
+        this.numberEntryCalculationService = numberEntryCalculationService;
+        this.numberEntryRepository = numberEntryRepository;
+        this.random = new SecureRandom();
+    }
 
     public float calculateTotalAverageNumber(){
         return numberEntryCalculationService.calculateAverageNumber(numberEntryRepository.findAll());
@@ -44,15 +50,12 @@ public class NumberEntryService {
     }
 
     public NumberEntry generateRandomNumberEntry(float minValue, float maxValue){
-        SecureRandom secureRandom = new SecureRandom();
-        float randomValue = minValue + secureRandom.nextFloat() * (maxValue - minValue);
+        float randomValue = minValue + random.nextFloat() * (maxValue - minValue);
         return new NumberEntry(LocalDateTime.now(), randomValue);
     }
 
     public List<NumberEntry> createRandomNumberOfRandomEntries(int minNumber, int maxNumber, float minValue, float maxValue){
         List<NumberEntry> numberEntries = new LinkedList<NumberEntry>();
-
-        SecureRandom random = new SecureRandom();
 
         int randomNumber = random.nextInt(maxNumber + 1 - minNumber) + minNumber;
 
