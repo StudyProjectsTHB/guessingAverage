@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import de.thb.guessingaverage.entities.NumberEntry;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class NumberEntryService {
@@ -29,7 +32,30 @@ public class NumberEntryService {
         return numberEntryCalculationService.getMinNumber(numberEntryRepository.findAll());
     }
 
-    public void addNumber(NumberEntryFormModel form){
+    public void addNumberFromNumberEntryFromModel(NumberEntryFormModel form){
         numberEntryRepository.save(new NumberEntry(LocalDateTime.now(), form.getNumber()));
+    }
+
+    public long getTotalNumberOfNumberEntries(){
+        return numberEntryRepository.count();
+    }
+
+    public NumberEntry generateRandomNumberEntry(float minValue, float maxValue){
+        float randomValue = (float) (minValue + Math.random() * (maxValue - minValue));
+        return new NumberEntry(LocalDateTime.now(), randomValue);
+    }
+
+    public List<NumberEntry> createRandomNumberOfRandomEntries(int minNumber, int maxNumber, float minValue, float maxValue){
+        List<NumberEntry> numberEntries = new LinkedList<NumberEntry>();
+
+        int randomNumber = (int) (minNumber + Math.random() * (maxNumber - minNumber));
+
+        for(int i = 0; i < randomNumber; i++){
+            numberEntries.add(generateRandomNumberEntry(minValue, maxValue));
+        }
+
+        numberEntryRepository.saveAll(numberEntries);
+
+        return numberEntries;
     }
 }

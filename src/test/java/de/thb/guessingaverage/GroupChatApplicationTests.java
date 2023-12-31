@@ -174,10 +174,10 @@ class NumberEntryServiceTests {
         NumberEntryFormModel form = new NumberEntryFormModel();
         float number = 1.f;
         form.setNumber(number);
-        numberEntryService.addNumber(form);
+        numberEntryService.addNumberFromNumberEntryFromModel(form);
         number = 2.5f;
         form.setNumber(number);
-        numberEntryService.addNumber(form);
+        numberEntryService.addNumberFromNumberEntryFromModel(form);
         Assertions.assertEquals(number, numberEntryRepository.findTopByOrderByIdDesc().getNumber(), "Number should be added to the database.");
     }
 

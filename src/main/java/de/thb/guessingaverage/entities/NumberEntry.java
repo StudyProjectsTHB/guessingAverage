@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NumberEntry implements Comparable<NumberEntry>{
     @Id
-//    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
 
