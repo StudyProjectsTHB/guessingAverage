@@ -9,6 +9,7 @@ import de.thb.guessingaverage.entities.NumberEntry;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
@@ -48,7 +49,9 @@ public class NumberEntryService {
     public List<NumberEntry> createRandomNumberOfRandomEntries(int minNumber, int maxNumber, float minValue, float maxValue){
         List<NumberEntry> numberEntries = new LinkedList<NumberEntry>();
 
-        int randomNumber = (int) (minNumber + Math.random() * (maxNumber - minNumber));
+        Random random = new Random();
+
+        int randomNumber = random.nextInt(maxNumber + 1 - minNumber) + minNumber;
 
         for(int i = 0; i < randomNumber; i++){
             numberEntries.add(generateRandomNumberEntry(minValue, maxValue));
