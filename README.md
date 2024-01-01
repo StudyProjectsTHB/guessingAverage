@@ -51,7 +51,7 @@ mvn spring-boot:run
    bash ./create_tfvars.sh
    ```
 
-4. Write your credentials into terraform\variables.auto.tfvars
+5. Write your credentials into terraform\variables.auto.tfvars
 
    + aws_access_key_id: Your AWS Access Key ID
    + aws_secret_access_key: Your AWS Secret Access Key
@@ -59,38 +59,37 @@ mvn spring-boot:run
    + aws_db_password: The password for the PostgreSQL database, e.g. "guessingAverage_password"
    + aws_db_user: The username for the PostgreSQL database, e.g. "guessingAverage_user"
    + aws_ec2_public_key: Your public key for the EC2 instances
-   + github_token: Your [GitHub token](https://github.com/settings/tokens/new), it must have the scope "admin:repo_hook"
+   + github_token: Your [GitHub token](https://github.com/settings/tokens/new), it must have the scope "admin:repo_hook" and you must have admin rights on the repository
    + github_repository: The repository where the webhook will be created, it is already set to "guessingAverage"
    + github_repository_owner: The owner of the repository, it is already set to "eineOrganisation"
-   + github_webhook_secret: The secret for the webhook (not implemented yet, maybe available in the future)
 
-5. Move into the terraform directory
+6. Move into the terraform directory
    ```shell
    cd terraform
    ```
 
-6. Initialize Terraform
+7. Initialize Terraform
    ```shell
    terraform init
    ```
-7. Test your credentials
+8. Test your credentials
    ```shell
    terraform plan
    ```
 
-8. Deploy the project
+9. Deploy the project
    ```shell
    terraform apply --auto-approve
    ```
    + The DNS name of the load balancer will be printed to the console. You can access the application via this URL.
 
-9. Destroy the project
-   ```shell
-   terraform destroy --auto-approve
-   ```
+10. Destroy the project
+    ```shell
+    terraform destroy --auto-approve
+    ```
 
 ## Next Steps
 + AMI for launch configuration
-+ GitHub Webhook Secret
++ Replaceable Docker container in start_script
 + Exception Handing for Webhook Lambda
 + Clean up code
