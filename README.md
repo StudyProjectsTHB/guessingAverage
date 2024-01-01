@@ -84,9 +84,9 @@ mvn spring-boot:run
    + The DNS name of the load balancer will be printed to the console. You can access the application via this URL.
 
 10. Destroy the project
-   ```shell
-   terraform destroy --auto-approve
-   ```
+    ```shell
+    terraform destroy --auto-approve
+    ```
 
 ## Next Steps
 + AMI for launch configuration
