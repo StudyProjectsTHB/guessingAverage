@@ -21,6 +21,7 @@ resource "aws_lambda_function" "github_webhook_lambda" {
   environment {
       variables = {
           asg_name = aws_autoscaling_group.webserver-asg.name
+          webhook_secret = random_password.webhook_secret.result
       }
   }
 

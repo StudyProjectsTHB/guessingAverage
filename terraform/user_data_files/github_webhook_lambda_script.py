@@ -2,6 +2,8 @@ import json
 import boto3
 from datetime import datetime, timedelta
 import os
+import hmac
+import hashlib
 
 
 def lambda_handler(event, context):
@@ -10,6 +12,16 @@ def lambda_handler(event, context):
     # print(context)
     # print(event["headers"]["x-github-event"])
     if event["headers"]["x-github-event"] == "workflow_run":
+        secret = os.environ["webhook_secret"]
+        signature = event["headers"]["x-hub-signature"]
+        body = event["body"].encode('utf-8')
+
+        if not verify_signature(secret, body, signature):
+                return {
+                    'statusCode': 403,
+                    'body': json.dumps('Invalid GitHub signature')
+                }
+
         if type(event["body"]) == type("str"):
             run_status = json.loads(event["body"])
         else:
@@ -82,3 +94,9 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('update received')
     }
+
+
+def verify_signature(secret, payload, signature):
+    mac = hmac.new(secret.encode('utf-8'), msg=payload, digestmod=hashlib.sha1)
+    expected_signature = "sha1=" + mac.hexdigest()
+    return hmac.compare_digest(expected_signature, signature)
