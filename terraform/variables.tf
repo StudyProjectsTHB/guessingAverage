@@ -34,5 +34,5 @@ variable "aws_credentials" {
 }
 
 variable "github_credentials" {
- type = map(string)  # keys: "github_token", "github_repository", "github_owner"
+ type = map(string)  # keys: "github_token", "github_repository", "github_repository_owner"
 }

@@ -30,17 +30,19 @@ public class NumberController {
     public String addNumber(@ModelAttribute NumberEntryFormModel form, Model model){
         numberEntryService.addNumberFromNumberEntryFromModel(form);
 
-        model.addAttribute("minNumber", numberEntryService.getTotalMinNumber());
-        model.addAttribute("maxNumber", numberEntryService.getTotalMaxNumber());
-        model.addAttribute("medianNumber", numberEntryService.calculateTotalMedianNumber());
         model.addAttribute("averageNumber", numberEntryService.calculateTotalAverageNumber());
-        model.addAttribute("properties", properties);
-        model.addAttribute("number", form.getNumber());
 
         if(properties.getRandomNumbersFrequency() != 0 && (numberEntryService.getTotalNumberOfNumberEntries() % properties.getRandomNumbersFrequency()) == 0){
             numberEntryService.createRandomNumberOfRandomEntries(properties.getMinNumber(), properties.getMaxNumber(), properties.getMinValue(), properties.getMaxValue());
             model.addAttribute("newNumbersAdded", true);
         }
+
+        model.addAttribute("minNumber", numberEntryService.getTotalMinNumber());
+        model.addAttribute("maxNumber", numberEntryService.getTotalMaxNumber());
+        model.addAttribute("medianNumber", numberEntryService.calculateTotalMedianNumber());
+        model.addAttribute("properties", properties);
+        model.addAttribute("number", form.getNumber());
+
 
         return "guessing-average.html";
     }
