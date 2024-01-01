@@ -21,7 +21,6 @@ if exist "%FilePath%" (
     echo   "github_token": "YOUR_GITHUB_TOKEN",
     echo   "github_repository": "guessingAverage",
     echo   "github_repository_owner": "eineOrganisation",
-    echo   "github_webhook_secret": "THE_SECRET_FOR_THE_WEBHOOK",
     echo }
     ) > "%FilePath%"
 

@@ -20,7 +20,6 @@ github_credentials = {
   "github_token": "YOUR_GITHUB_TOKEN",
   "github_repository": "guessingAverage",
   "github_repository_owner": "eineOrganisation",
-  "github_webhook_secret": "THE_SECRET_FOR_THE_WEBHOOK",
 }
 EOF
     echo "created $FilePath."
