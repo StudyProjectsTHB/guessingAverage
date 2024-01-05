@@ -8,7 +8,7 @@
 ### Build Locally
 * Java 17
 * Maven 4.0.0
-* PostgreSQL datavase
+* PostgreSQL 16
 
 ### Deploy to AWS
 * Terraform 1.6.0
