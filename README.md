@@ -16,18 +16,18 @@
 ## Installation
 ### Build Locally
 1. Clone the repository
-```shell
-git clone https://github.com/eineOrganisation/guessingAverage.git
-```
+   ```shell
+   git clone https://github.com/eineOrganisation/guessingAverage.git
+   ```
 2. Build the project
-```shell
-mvn clean install
-```
+   ```shell
+   mvn clean install
+   ```
 3. Set enviroment variables DATABASE_HOST, DATABASE_NAME, DATABASE_USER and DATABASE_PASSWORD
 4. Run the project
-```shell
-mvn spring-boot:run
-```
+   ```shell
+   mvn spring-boot:run
+   ```
 
 ### Deploy to AWS
 
