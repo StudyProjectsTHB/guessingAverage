@@ -58,7 +58,7 @@
    + aws_session_token: Your AWS Session Token
    + aws_db_password: The password for the PostgreSQL database, e.g. "guessingAverage_password"
    + aws_db_user: The username for the PostgreSQL database, e.g. "guessingAverage_user"
-   + aws_ec2_public_key: Your public key for the EC2 instances
+   + aws_ec2_public_key: Your OpenSSH public key for the EC2 instances, you will need to generate your own
    + github_token: Your [GitHub token](https://github.com/settings/tokens/new), it must have the scope "admin:repo_hook" and you must have admin rights on the repository
    + github_repository: The repository where the webhook will be created, it is already set to "guessingAverage"
    + github_repository_owner: The owner of the repository, it is already set to "eineOrganisation"
