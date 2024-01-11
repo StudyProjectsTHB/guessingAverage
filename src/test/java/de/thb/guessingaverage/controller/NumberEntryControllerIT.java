@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class NumberEntryControllerTest {
+class NumberEntryControllerIT {
 
     @Autowired
     private TestRestTemplate restTemplate;

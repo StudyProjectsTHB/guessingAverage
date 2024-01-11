@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-class NumberEntryServiceTest {
+class NumberEntryServiceTests {
 
     @Autowired
     private NumberEntryService numberEntryService;
