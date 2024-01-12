@@ -25,7 +25,8 @@ Grün steht für die Kommunikation des "Standardnutzers" der Anwendung. Der Stan
 Die roten Pfeile symbolisieren den Zugriff eines Admins (aus dem Netzwerk der THB) über SSH. 
 Die orangenen Pfeile stehen für den Zugriff auf das öffentliche Internet, ausgehend von den EC2 Instanzen. 
 
-Bild
+![image](https://github.com/eineOrganisation/guessingAverage/assets/82468704/e525149c-7504-4a43-bfc3-41fc13ba99a4)
+*Cloud-Infrastruktur der Anwendung*
 
 In der Darstellung werden einige Bestandteile aus Gründen der Übersichtlichkeit nicht angezeigt. Zum Beispiel sind der ELB, die EC2-Intanzen und die Datenbank mit Security-Groups abgesichert. 
 Die SG des ELB akzeptiert und leitet nur eingehende HTTP:80 Anfragen an die EC2-Instanzen weiter.
