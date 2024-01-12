@@ -12,7 +12,6 @@ data "aws_iam_instance_profile" "vocareum_lab_instance_profile" {
 
 resource "aws_key_pair" "guessingAverage_key_pair"{
   key_name = "guessingAverage_key"
-  #  public_key = file(var.credentials["public_key_file"])
   public_key = var.aws_credentials["aws_ec2_public_key"]
 }
 
@@ -43,7 +42,6 @@ resource "aws_autoscaling_group" "webserver-asg" {
 
   launch_template {
     id      = aws_launch_template.webserver-lt.id
-    # version = "$Latest"
     version = aws_launch_template.webserver-lt.latest_version
   }
   target_group_arns = [aws_lb_target_group.webserver-tg.arn]
