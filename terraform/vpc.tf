@@ -11,13 +11,6 @@ resource "aws_vpc" "webserver_vpc" {
   }
 }
 
-# S3 Endpoint
-resource "aws_vpc_endpoint" "s3_endpoint" {
-  vpc_id = aws_vpc.webserver_vpc.id
-
-  service_name = "com.amazonaws.us-east-1.s3"
-}
-
 # subnets
 resource "aws_subnet" "public_subnet" {
   count = var.num_public_subnets
@@ -70,10 +63,6 @@ resource "aws_route_table" "private_route_table" {
     cidr_block = aws_vpc.webserver_vpc.cidr_block
     gateway_id = "local"
   }
-}
-resource "aws_vpc_endpoint_route_table_association" "s3_endpoint_association" {
-  route_table_id  = aws_route_table.private_route_table.id
-  vpc_endpoint_id = aws_vpc_endpoint.s3_endpoint.id
 }
 resource "aws_route_table_association" "private_association" {
   count = var.num_private_subnets

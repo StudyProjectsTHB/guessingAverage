@@ -30,11 +30,11 @@ variable "github_webhook_route" {
 }
 
 variable "aws_credentials" {
- description = 'AWS Credentials, following keys are required: "aws_access_key_id", "aws_secret_access_key", "aws_session_token", "aws_db_password", "aws_db_user", "aws_ec2_public_key"'
+ description = "AWS Credentials, following keys are required: 'aws_access_key_id', 'aws_secret_access_key', 'aws_session_token', 'aws_db_password', 'aws_db_user', 'aws_ec2_public_key'"
  type = map(string)
 }
 
 variable "github_credentials" {
- description = 'Github Credentials, following keys are required: "github_token", "github_repository", "github_repository_owner"'
+ description = "Github Credentials, following keys are required: 'github_token', 'github_repository', 'github_repository_owner'"
  type = map(string)
 }

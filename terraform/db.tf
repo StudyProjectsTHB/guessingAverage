@@ -18,7 +18,7 @@ resource "aws_db_instance" "postgres_instance" {
 }
 
 resource "aws_secretsmanager_secret" "db_secret" {
-  name = "tf-secret_manager"
+  name = "tf-secret_manager-${random_password.db_secret_name.result}"
   recovery_window_in_days = 0
 }
 
