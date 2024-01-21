@@ -154,14 +154,6 @@ resource "aws_ami_from_instance" "instance_ami" {
 }
 
 
-#resource "null_resource" "delay_for_read_ami" {
-#  depends_on = [aws_instance.ec2_instance_for_ami]
-#  provisioner "local-exec" {
-#    command = var.operating_system == "windows" ? "powershell Start-Sleep -Seconds 300" : "sleep 300"
-#
-#  }
-#}
-
 
 data "aws_ami" "webserver_ami" {
   most_recent = true
@@ -173,8 +165,4 @@ data "aws_ami" "webserver_ami" {
   depends_on = [
     aws_ami_from_instance.instance_ami
   ]
-}
-
-output "ami" {
-  value = data.aws_ami.webserver_ami.id
 }

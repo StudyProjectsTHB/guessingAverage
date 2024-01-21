@@ -48,6 +48,3 @@ variable "operating_system" {
  default = "windows"
 }
 
-output "os" {
- value = var.operating_system
-}
