@@ -1,6 +1,10 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=eineOrganisation_guessingAverage&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=eineOrganisation_guessingAverage)
 ![CI Maven](https://github.com/eineOrganisation/guessingAverage/actions/workflows/maven.yml/badge.svg)
 
+# GuessingAvg - Na, heute schon geraten?
+
+## [Documentation](README.md)
+
 # guessingAverage installation
 
 ## Requirements
@@ -12,9 +16,12 @@
 
 ### Deploy to AWS
 * Terraform 1.6.0
+* Python 3.9.13
 
 ## Installation
 ### Build Locally
++ Only tested with Windows
+
 1. Clone the repository
    ```shell
    git clone https://github.com/eineOrganisation/guessingAverage.git
@@ -51,7 +58,7 @@
    bash ./create_tfvars.sh
    ```
 
-5. Write your credentials into terraform\variables.auto.tfvars
+4. Write your credentials into terraform\variables.auto.tfvars
 
     + aws_access_key_id: Your AWS Access Key ID
     + aws_secret_access_key: Your AWS Secret Access Key
@@ -62,6 +69,13 @@
     + github_token: Your [GitHub token](https://github.com/settings/tokens/new?description=guessingAverageWebHook&scopes=admin:repo_hook), it must have the scope "admin:repo_hook" and you must have admin rights on the repository
     + github_repository: The repository where the webhook will be created, it is already set to "guessingAverage"
     + github_repository_owner: The owner of the repository, it is already set to "eineOrganisation"
+    + docker_repository: The name of your Docker repository, it is already set to "leonxs/guessing_average:latest"
+    + operation_system: Your operating system, it is already set to "windows" or "unix"
+
+5. Install python dependencies
+   ```shell
+   pip install -r requirements.txt
+   ```
 
 6. Move into the terraform directory
    ```shell
@@ -87,9 +101,3 @@
     ```shell
     terraform destroy --auto-approve
     ```
-
-## Next Steps
-+ AMI for launch configuration
-+ Replaceable Docker container in start_script
-+ Exception Handing for Webhook Lambda
-+ Clean up code

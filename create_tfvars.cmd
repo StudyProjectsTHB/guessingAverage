@@ -22,6 +22,12 @@ if exist "%FilePath%" (
     echo   "github_repository": "guessingAverage",
     echo   "github_repository_owner": "eineOrganisation",
     echo }
+    echo.
+    echo docker_credentials = {
+    echo   "docker_repository": "leonxs/guessing_average:latest",
+    echo }
+    echo.
+    echo operating_system = "windows"
     ) > "%FilePath%"
 
     echo created %FilePath%.

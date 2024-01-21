@@ -38,3 +38,16 @@ variable "github_credentials" {
  description = "Github Credentials, following keys are required: 'github_token', 'github_repository', 'github_repository_owner'"
  type = map(string)
 }
+
+variable "docker_credentials" {
+ type = map(string)  # keys: "docker_repository"
+}
+
+variable "operating_system" {
+ type = string
+ default = "windows"
+}
+
+output "os" {
+ value = var.operating_system
+}

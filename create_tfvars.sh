@@ -21,6 +21,13 @@ github_credentials = {
   "github_repository": "guessingAverage",
   "github_repository_owner": "eineOrganisation",
 }
+
+docker_credentials = {
+  "docker_repository": "leonxs/guessing_average:latest",
+}
+
+operating_system = "unix"
+
 EOF
     echo "created $FilePath."
 fi
