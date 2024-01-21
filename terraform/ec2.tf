@@ -60,7 +60,7 @@ resource "aws_autoscaling_group" "webserver-asg" {
     preferences {
       min_healthy_percentage = 100
       max_healthy_percentage = 200
-      instance_warmup        = 60
+      instance_warmup        = 120
     }
   }
 

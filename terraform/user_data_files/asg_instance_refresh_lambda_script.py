@@ -27,7 +27,7 @@ def lambda_handler(event, context):
                         Strategy='Rolling',
                         Preferences={
                             'MinHealthyPercentage': 30,
-                            'InstanceWarmup': 60,
+                            'InstanceWarmup': 120,
                             'SkipMatching': False,
                             'ScaleInProtectedInstances': 'Ignore',
                             'StandbyInstances': 'Ignore',
