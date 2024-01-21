@@ -34,3 +34,14 @@ Die SG der EC2-Instanzen erlauben nur eingehenden Traffic von der SG des ELB und
 Die SG der DB erlaubt nur eingehende Anfragen der SG der EC2-Instanzen. 
 Außerdem wurden in der Darstellung die Routing-Tables der einzelnen Subnets weggelassen. <br>
 Der nächste Abschnitt wirft einen genaueren Blick auf die Continuous Delivery Pipeline und wie diese mit GitHub und AWS umgesetzt wurde. 
+
+### Der Update-Prozess
+
+![CC_AWS_Terraform_Update](https://github.com/eineOrganisation/guessingAverage/assets/72797311/c4ad76ba-513c-4091-99b3-00b9d06dea8c)
+*Der Update-Prozess graphisch dargestellt*
+
+Bei jedem Push in das `GitHub Repository` wird ein `GitHub Workflow` gestartet. Dieser führt zunächst die `Unit- und Integrationstests` mit mvn install durch. Sind diese erfolgreich, wird ein `Docker-Image` erstellt und auf das `Docker-Repository` gepusht. Anschließend sendet GitHub einen Webhook an das `AWS API Gateway`. Dieses leitet die Informationen aus dem Webhook an eine `Lambda-Funktion` weiter, welche die `Referenz-EC2-Instanz` aktualisiert und die neueste Docker-Version herunterlädt. Sobald die Aktualisierung der EC2 Instanz abgeschlossen ist, wird eine `SQS` benachrichtigt. Diese aktiviert eine Lambda-Funktion, die ein `AMI` aus der Referenz-EC2-Instanz erstellt. Danach aktiviert sie ein `Event` für in 2 Minuten für eine weitere Lambda Funktion, die überprüft, ob das AMI bereits fertig erstellt wurde. Ist dies nicht der Fall, wird das Event in 2 Minuten erneut ausgelöst. Ist das AMI fertig erstellt, wird daraus eine neue Version des `Launch Templates` erstellt. Mit dieser wird die `Auto Scaling Group` aktualisiert und ein `Instance Refresh` durchgeführt. Sollte der Instance Refresh fehlschlagen, weil bereits ein Instance Refresh läuft, wird dies in eine weitere SQS geschrieben. Nachdem die Auto Scaling Group ihren Instance Refresh abgeschlossen hat, wird ein Event ausgelöst, das eine Lambda-Funktion auslöst. Diese Lambda-Funktion prüft, ob die SQS gefüllt ist. Sollte dem so sein, gab es während dem Instance Refresh einen erneuten Push auf das GitHub und der Instance Refresh wird neu gestartet. Wenn die SQS leer ist, ist die Aktualisierung der Auto Scaling Group abgeschlossen und die Continous Delivery Pipeline beendet.
+
+
+
+
