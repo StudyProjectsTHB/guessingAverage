@@ -5,7 +5,7 @@
 
 ## [Documentation](README.md)
 
-# guessingAverage installation
+# Installation
 
 ## Requirements
 
