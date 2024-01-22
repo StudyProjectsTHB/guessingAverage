@@ -20,7 +20,6 @@
 
 ## Installation
 ### Build Locally
-+ Only tested with Windows
 
 1. Clone the repository
    ```shell
@@ -37,6 +36,8 @@
    ```
 
 ### Deploy to AWS
+
++ Only tested with Windows
 
 1. Clone the repository
    ```shell
