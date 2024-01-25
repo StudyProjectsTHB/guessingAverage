@@ -20,11 +20,7 @@ resource "aws_lb_listener" "webserver-listener" {
   protocol          = "HTTP"
 
   default_action {
-    type = "forward"
+    type             = "forward"
     target_group_arn = aws_lb_target_group.webserver-tg.arn
   }
-}
-
-output "webserver-alb-dns" {
-    value = aws_lb.webserver-alb.dns_name
 }

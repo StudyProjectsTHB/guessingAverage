@@ -2,8 +2,8 @@ data "aws_availability_zones" "available" {}
 
 # VPC
 resource "aws_vpc" "webserver_vpc" {
-  cidr_block = "10.0.0.0/16"
-  enable_dns_support = true
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
@@ -65,12 +65,12 @@ resource "aws_route_table" "private_route_table" {
   }
 }
 resource "aws_route_table_association" "private_association" {
-  count = var.num_private_subnets
+  count          = var.num_private_subnets
   subnet_id      = aws_subnet.private_subnet[count.index].id
   route_table_id = aws_route_table.private_route_table.id
 }
 resource "aws_route_table_association" "public_association" {
-  count = var.num_public_subnets
+  count          = var.num_public_subnets
   subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.public_route_table.id
 }

@@ -1,23 +1,23 @@
 data "archive_file" "github_webhook_lambda_payload" {
-  type = "zip"
+  type        = "zip"
   source_file = "${path.module}/user_data_files/github_webhook_lambda_script.py"
   output_path = "${path.module}/user_data_files/github_webhook_lambda_payload.zip"
 }
 
 data "archive_file" "ec2_lambda_payload" {
-  type = "zip"
+  type        = "zip"
   source_file = "${path.module}/user_data_files/ec2_lambda_script.py"
   output_path = "${path.module}/user_data_files/ec2_lambda_payload.zip"
 }
 
 data "archive_file" "ami_lambda_payload" {
-  type = "zip"
+  type        = "zip"
   source_file = "${path.module}/user_data_files/ami_lambda_script.py"
   output_path = "${path.module}/user_data_files/ami_lambda_payload.zip"
 }
 
 data "archive_file" "asg_instance_refresh_lambda_payload" {
-  type = "zip"
+  type        = "zip"
   source_file = "${path.module}/user_data_files/asg_instance_refresh_lambda_script.py"
   output_path = "${path.module}/user_data_files/asg_instance_refresh_lambda_payload.zip"
 }
@@ -27,23 +27,23 @@ data "aws_iam_role" "vocareum_lab_lambda_role" {
 }
 
 resource "aws_lambda_function" "github_webhook_lambda" {
-  function_name = "GitHubWebhook"
-  description = "GitHub Webhook"
-  handler = "github_webhook_lambda_script.lambda_handler"
-  role = data.aws_iam_role.vocareum_lab_lambda_role.arn
-  filename = "${path.module}/user_data_files/github_webhook_lambda_payload.zip"
-  source_code_hash = "${data.archive_file.github_webhook_lambda_payload.output_base64sha256}"
-  runtime = "python3.12"
-  timeout = 10
+  function_name    = "GitHubWebhook"
+  description      = "GitHub Webhook"
+  handler          = "github_webhook_lambda_script.lambda_handler"
+  role             = data.aws_iam_role.vocareum_lab_lambda_role.arn
+  filename         = "${path.module}/user_data_files/github_webhook_lambda_payload.zip"
+  source_code_hash = data.archive_file.github_webhook_lambda_payload.output_base64sha256
+  runtime          = "python3.12"
+  timeout          = 10
 
   environment {
-      variables = {
-          asg_name = aws_autoscaling_group.webserver-asg.name
-          webhook_secret = random_password.webhook_secret.result
-          ec2_instance_id = aws_instance.ec2_instance_for_ami.id
-          sqs_ec2_queue_url = aws_sqs_queue.sqs_queue_for_ec2.url
-          docker_repo = var.docker_credentials["docker_repository"]
-      }
+    variables = {
+      asg_name          = aws_autoscaling_group.webserver-asg.name
+      webhook_secret    = random_password.webhook_secret.result
+      ec2_instance_id   = aws_instance.ec2_instance_for_ami.id
+      sqs_ec2_queue_url = aws_sqs_queue.sqs_queue_for_ec2.url
+      docker_repo       = var.docker_credentials["docker_repository"]
+    }
   }
 }
 
@@ -60,17 +60,17 @@ resource "aws_apigatewayv2_route" "github_webhook_route" {
 }
 
 resource "aws_apigatewayv2_integration" "github_webhook_integration" {
-  api_id = aws_apigatewayv2_api.github_webhook_api_gateway.id
-  integration_type = "AWS_PROXY"
-  integration_method = "POST"
+  api_id                 = aws_apigatewayv2_api.github_webhook_api_gateway.id
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
   payload_format_version = "2.0"
-  integration_uri = aws_lambda_function.github_webhook_lambda.invoke_arn
+  integration_uri        = aws_lambda_function.github_webhook_lambda.invoke_arn
 }
 
 resource "aws_apigatewayv2_stage" "github_webhook_stage" {
-  api_id        = aws_apigatewayv2_api.github_webhook_api_gateway.id
-  name          = "$default"
-  auto_deploy   = true
+  api_id      = aws_apigatewayv2_api.github_webhook_api_gateway.id
+  name        = "$default"
+  auto_deploy = true
 }
 
 resource "aws_lambda_permission" "github_webhook_lambda_permission" {
@@ -82,16 +82,16 @@ resource "aws_lambda_permission" "github_webhook_lambda_permission" {
 }
 
 resource "aws_sqs_queue" "sqs_queue_for_ec2" {
-    name = "SQSQueueForEC2"
-    fifo_queue = false
-#    content_based_deduplication = true
+  name       = "SQSQueueForEC2"
+  fifo_queue = false
+  #    content_based_deduplication = true
 }
 
 resource "aws_lambda_event_source_mapping" "sqs_ec2_lambda_ec2_event_source_mapping" {
   event_source_arn = aws_sqs_queue.sqs_queue_for_ec2.arn
   function_name    = aws_lambda_function.ec2_lambda.function_name
   batch_size       = 10
-  enabled = true
+  enabled          = true
 }
 
 resource "aws_lambda_permission" "sqs_ec2_lambda_permission" {
@@ -103,65 +103,65 @@ resource "aws_lambda_permission" "sqs_ec2_lambda_permission" {
 }
 
 resource "aws_lambda_function" "ec2_lambda" {
-  function_name = "EC2Lambda"
-  description = "create AMI from EC2 instance"
-  handler = "ec2_lambda_script.lambda_handler"
-  role = data.aws_iam_role.vocareum_lab_lambda_role.arn
-  filename = "${path.module}/user_data_files/ec2_lambda_payload.zip"
-  source_code_hash = "${data.archive_file.ec2_lambda_payload.output_base64sha256}"
-  runtime = "python3.12"
-  timeout = 10
+  function_name    = "EC2Lambda"
+  description      = "create AMI from EC2 instance"
+  handler          = "ec2_lambda_script.lambda_handler"
+  role             = data.aws_iam_role.vocareum_lab_lambda_role.arn
+  filename         = "${path.module}/user_data_files/ec2_lambda_payload.zip"
+  source_code_hash = data.archive_file.ec2_lambda_payload.output_base64sha256
+  runtime          = "python3.12"
+  timeout          = 10
 
   environment {
     variables = {
-      ec2_instance_id = aws_instance.ec2_instance_for_ami.id
-      event_rule_name = aws_cloudwatch_event_rule.trigger_lambda_for_ami_rule.name
+      ec2_instance_id   = aws_instance.ec2_instance_for_ami.id
+      event_rule_name   = aws_cloudwatch_event_rule.trigger_lambda_for_ami_rule.name
       sqs_ec2_queue_url = aws_sqs_queue.sqs_queue_for_ec2.id
-      ami_lambda_arn = aws_lambda_function.ami_lambda.arn
-      ami_tags = "[{\"Key\": \"created_by\",\"Value\": \"lambda\" },{\"Key\": \"guessingAverage\",\"Value\": \"webserver-ami\" }]"
+      ami_lambda_arn    = aws_lambda_function.ami_lambda.arn
+      ami_tags          = "[{\"Key\": \"created_by\",\"Value\": \"lambda\" },{\"Key\": \"guessingAverage\",\"Value\": \"webserver-ami\" }]"
     }
   }
 }
 
 resource "aws_sqs_queue" "sqs_queue_for_asg" {
-  name = "SQSQueueForASG"
+  name       = "SQSQueueForASG"
   fifo_queue = false
-#  content_based_deduplication = true
+  #  content_based_deduplication = true
 }
 
 resource "aws_lambda_function" "ami_lambda" {
-  function_name = "AMILambda"
-  description = "Check if AMI is available and start ASG instance refresh"
-  handler = "ami_lambda_script.lambda_handler"
-  role = data.aws_iam_role.vocareum_lab_lambda_role.arn
-  filename = "${path.module}/user_data_files/ami_lambda_payload.zip"
-  source_code_hash = "${data.archive_file.ami_lambda_payload.output_base64sha256}"
-  runtime = "python3.12"
-  timeout = 10
+  function_name    = "AMILambda"
+  description      = "Check if AMI is available and start ASG instance refresh"
+  handler          = "ami_lambda_script.lambda_handler"
+  role             = data.aws_iam_role.vocareum_lab_lambda_role.arn
+  filename         = "${path.module}/user_data_files/ami_lambda_payload.zip"
+  source_code_hash = data.archive_file.ami_lambda_payload.output_base64sha256
+  runtime          = "python3.12"
+  timeout          = 10
 
   environment {
     variables = {
-      asg_name = aws_autoscaling_group.webserver-asg.name
+      asg_name           = aws_autoscaling_group.webserver-asg.name
       launch_template_id = aws_launch_template.webserver-lt.id
-      event_rule_name = aws_cloudwatch_event_rule.trigger_lambda_for_ami_rule.name
-      sqs_asg_queue_url = aws_sqs_queue.sqs_queue_for_asg.id
-      fail_message = "ASGUpdateFailed"
+      event_rule_name    = aws_cloudwatch_event_rule.trigger_lambda_for_ami_rule.name
+      sqs_asg_queue_url  = aws_sqs_queue.sqs_queue_for_asg.id
+      fail_message       = "ASGUpdateFailed"
     }
   }
 }
 
 resource "aws_cloudwatch_event_rule" "trigger_lambda_for_ami_rule" {
-    name = "TriggerLambda"
-    description = "Trigger Lambda to check if AMI is available"
-#  dummy expression to not trigger the rule
-    schedule_expression = "cron(0 0 1 1 ? 1970)"
+  name        = "TriggerLambda"
+  description = "Trigger Lambda to check if AMI is available"
+  #  dummy expression to not trigger the rule
+  schedule_expression = "cron(0 0 1 1 ? 1970)"
 
 }
 
 resource "aws_cloudwatch_event_target" "trigger_lambda_target" {
-    rule = aws_cloudwatch_event_rule.trigger_lambda_for_ami_rule.name
-    arn = aws_lambda_function.ami_lambda.arn
-    target_id = "TriggerLambdaTarget"
+  rule      = aws_cloudwatch_event_rule.trigger_lambda_for_ami_rule.name
+  arn       = aws_lambda_function.ami_lambda.arn
+  target_id = "TriggerLambdaTarget"
 }
 
 resource "aws_lambda_permission" "ami_lambda_permission" {
@@ -173,21 +173,21 @@ resource "aws_lambda_permission" "ami_lambda_permission" {
 }
 
 resource "aws_lambda_function" "asg_instance_refresh_lambda" {
-  function_name = "ASGInstanceRefreshLambda"
-  description = "Refresh ASG instances"
-  handler = "asg_instance_refresh_lambda_script.lambda_handler"
-  role = data.aws_iam_role.vocareum_lab_lambda_role.arn
-  filename = "${path.module}/user_data_files/asg_instance_refresh_lambda_payload.zip"
-  source_code_hash = "${data.archive_file.asg_instance_refresh_lambda_payload.output_base64sha256}"
-  runtime = "python3.12"
-  timeout = 20
+  function_name    = "ASGInstanceRefreshLambda"
+  description      = "Refresh ASG instances"
+  handler          = "asg_instance_refresh_lambda_script.lambda_handler"
+  role             = data.aws_iam_role.vocareum_lab_lambda_role.arn
+  filename         = "${path.module}/user_data_files/asg_instance_refresh_lambda_payload.zip"
+  source_code_hash = data.archive_file.asg_instance_refresh_lambda_payload.output_base64sha256
+  runtime          = "python3.12"
+  timeout          = 20
 
   environment {
     variables = {
-      asg_name = aws_autoscaling_group.webserver-asg.name
+      asg_name           = aws_autoscaling_group.webserver-asg.name
       launch_template_id = aws_launch_template.webserver-lt.id
-      fail_message = "ASGUpdateFailed"
-      sqs_asg_queue_url = aws_sqs_queue.sqs_queue_for_asg.id
+      fail_message       = "ASGUpdateFailed"
+      sqs_asg_queue_url  = aws_sqs_queue.sqs_queue_for_asg.id
     }
   }
 }
@@ -206,8 +206,8 @@ resource "aws_cloudwatch_event_rule" "asg_instance_refresh_rule" {
 }
 
 resource "aws_cloudwatch_event_target" "asg_instance_refresh_target" {
-  rule = aws_cloudwatch_event_rule.asg_instance_refresh_rule.name
-  arn = aws_lambda_function.asg_instance_refresh_lambda.arn
+  rule      = aws_cloudwatch_event_rule.asg_instance_refresh_rule.name
+  arn       = aws_lambda_function.asg_instance_refresh_lambda.arn
   target_id = "ASGInstanceRefreshTarget"
 }
 
@@ -223,9 +223,9 @@ resource "aws_lambda_permission" "asg_instance_refresh_lambda_permission" {
 
 resource "null_resource" "destroy_time_script" {
   triggers = {
-    aws_access_key_id = var.aws_credentials["aws_access_key_id"]
+    aws_access_key_id     = var.aws_credentials["aws_access_key_id"]
     aws_secret_access_key = var.aws_credentials["aws_secret_access_key"]
-    aws_session_token = var.aws_credentials["aws_session_token"]
+    aws_session_token     = var.aws_credentials["aws_session_token"]
   }
 
   provisioner "local-exec" {
@@ -235,7 +235,7 @@ resource "null_resource" "destroy_time_script" {
       AWS_ACCESS_KEY_ID     = self.triggers.aws_access_key_id
       AWS_SECRET_ACCESS_KEY = self.triggers.aws_secret_access_key
       AWS_SESSION_TOKEN     = self.triggers.aws_session_token
-      tags = "[{\"Key\": \"created_by\",\"Value\": \"lambda\" },{\"Key\": \"guessingAverage\",\"Value\": \"webserver-ami\" }]"
+      tags                  = "[{\"Key\": \"created_by\",\"Value\": \"lambda\" },{\"Key\": \"guessingAverage\",\"Value\": \"webserver-ami\" }]"
     }
 
   }
