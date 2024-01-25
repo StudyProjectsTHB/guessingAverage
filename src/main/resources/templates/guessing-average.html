@@ -7,11 +7,11 @@
     <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-    <h1>Guessing Average </h1>
+    <h1>Guessing Average</h1>
     <p>Du musst erraten, was der Durchschnitt aller bisher eingegebenen Zahlen ist! Jedes Mal, wenn du rätst, wird dein Tipp zum nächsten Durchschnitt dazugerechnet.</p>
     <p>Denke daran, dass dein eingegebener Wert schon mit in den Durchschnitt eingerechnet wird.</p>
     <p>Der bisher kleinste eingegebene Wert war <b th:text="${minNumber}"></b> und der größte <b th:text="${maxNumber}"></b>. Der Median aller bisherigen Werte ist <b th:text="${medianNumber}"></b>.</p>
-    <p>Aber Achtung! Bei jedem <b th:text="${properties.getRandomNumbersFrequency() + 'en'}"></b> Tipp werden zufällig <b th:text="${properties.getMinNumber()}"></b> bis <b th:text="${properties.getMaxNumber()}"></b> Zahlen mit Werten zwischen <b th:text="${properties.getMinValue()}"></b> und <b th:text="${properties.getMaxValue()}"></b> hinzugefügt.</p>
+    <p>Aber Achtung: Bei jedem <b th:text="${properties.getRandomNumbersFrequency() + 'ten'}"></b> Tipp werden zufällig <b th:text="${properties.getMinNumber()}"></b> bis <b th:text="${properties.getMaxNumber()}"></b> Zahlen mit Werten zwischen <b th:text="${properties.getMinValue()}"></b> und <b th:text="${properties.getMaxValue()}"></b> hinzugefügt.</p>
     <p>Wie nah kommst du an den echten Durchschnitt?</p>
     <form action="" method="POST">
         <h3 id="tipp-heading">Dein Tipp:</h3>
@@ -40,7 +40,7 @@
                 <td th:if="${number == averageNumber}" colspan="3">Dein Tipp ist richtig!</td>
             </tr>
         </table>
-        <p th:if="${newNumbersAdded}">Es wurden neue Zahlen hinzugefügt! Es wird nun also wieder komplizierter. Dein jetziges Ergebnis wurde aber nich dadurch beeinflusst. </p>
+        <p th:if="${newNumbersAdded}">Es wurden neue Zahlen hinzugefügt! Es wird nun also wieder komplizierter. Dein jetziges Ergebnis wurde dadurch aber nicht beeinflusst. </p>
         <p>Versuche es erneut!</p>
     </div>
 </body>
