@@ -1,18 +1,18 @@
-data "template_file" "ami_user_data" {
-  template = file("${path.module}/user_data_files/start_script_ami.sh.tpl")
-  vars = {
-    docker_repository = var.docker_credentials["docker_repository"]
-  }
-}
+#data "template_file" "ami_user_data" {
+#  template = file("${path.module}/user_data_files/start_script_ami.sh.tpl")
+#  vars = {
+#    docker_repository = var.docker_credentials["docker_repository"]
+#  }
+#}
 
-data "template_file" "launch_template_user_data" {
-  template = file("${path.module}/user_data_files/start_script_launch_template.sh.tpl")
-  vars = {
-    aws_region        = var.aws_region
-    secret_name       = aws_secretsmanager_secret.db_secret.name
-    docker_repository = var.docker_credentials["docker_repository"]
-  }
-}
+#data "template_file" "launch_template_user_data" {
+#  template = file("${path.module}/user_data_files/start_script_launch_template.sh.tpl")
+#  vars = {
+#    aws_region        = var.aws_region
+#    secret_name       = aws_secretsmanager_secret.db_secret.name
+#    docker_repository = var.docker_credentials["docker_repository"]
+#  }
+#}
 
 data "aws_iam_instance_profile" "vocareum_lab_instance_profile" {
   name = "LabInstanceProfile"
@@ -36,7 +36,13 @@ resource "aws_launch_template" "webserver-lt" {
 
   vpc_security_group_ids = [aws_security_group.webserver_w_lb.id]
   key_name               = aws_key_pair.guessingAverage_key_pair.key_name
-  user_data              = base64encode(data.template_file.launch_template_user_data.rendered)
+  user_data              = base64encode(templatefile("${path.module}/user_data_files/start_script_launch_template.sh.tpl", {
+                              aws_region        = var.aws_region
+                              secret_name       = aws_secretsmanager_secret.db_secret.name
+                              docker_repository = var.docker_credentials["docker_repository"]
+                            }))
+#  user_data              = base64encode(data.template_file.launch_template_user_data.rendered)
+
 }
 
 resource "aws_autoscaling_group" "webserver-asg" {
@@ -122,7 +128,10 @@ resource "aws_instance" "ec2_instance_for_ami" {
   ami                    = "ami-0c7217cdde317cfec"
   instance_type          = "t2.micro"
   key_name               = aws_key_pair.guessingAverage_key_pair.key_name
-  user_data              = base64encode(data.template_file.ami_user_data.rendered)
+  user_data              = base64encode(templatefile("${path.module}/user_data_files/start_script_ami.sh.tpl", {
+                              docker_repository = var.docker_credentials["docker_repository"]
+                            }))
+#  user_data              = base64encode(data.template_file.ami_user_data.rendered)
   iam_instance_profile   = data.aws_iam_instance_profile.vocareum_lab_instance_profile.name
   vpc_security_group_ids = [aws_security_group.webserver_w_lb.id]
   subnet_id              = aws_subnet.public_subnet[0].id
