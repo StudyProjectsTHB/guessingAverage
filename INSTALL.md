@@ -1,5 +1,5 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=eineOrganisation_guessingAverage&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=eineOrganisation_guessingAverage)
-![CI Maven](https://github.com/eineOrganisation/guessingAverage/actions/workflows/maven.yml/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=StudyProjectsTHB_guessingAverage&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=StudyProjectsTHB_guessingAverage)
+![CI Maven](https://github.com/StudyProjectsTHB/guessingAverage/actions/workflows/maven.yml/badge.svg)
 
 # GuessingAvg - Na, heute schon geraten?
 
@@ -23,7 +23,7 @@
 
 1. Clone the repository
    ```shell
-   git clone https://github.com/eineOrganisation/guessingAverage.git
+   git clone https://github.com/StudyProjectsTHB/guessingAverage.git
    ```
 2. Build the project
    ```shell
@@ -41,7 +41,7 @@
 
 1. Clone the repository
    ```shell
-   git clone https://github.com/eineOrganisation/guessingAverage.git
+   git clone https://github.com/StudyProjectsTHB/guessingAverage.git
    ```
 
 2. Move into the cloned repository
@@ -69,7 +69,7 @@
     + aws_ec2_public_key: Your OpenSSH public key for the EC2 instances, you will need to generate your own
     + github_token: Your [GitHub token](https://github.com/settings/tokens/new?description=guessingAverageWebHook&scopes=admin:repo_hook), it must have the scope "admin:repo_hook" and you must have admin rights on the repository
     + github_repository: The repository where the webhook will be created, it is already set to "guessingAverage"
-    + github_repository_owner: The owner of the repository, it is already set to "eineOrganisation"
+    + github_repository_owner: The owner of the repository, it is already set to "StudyProjectsTHB"
     + docker_repository: The name of your Docker repository, it is already set to "leonxs/guessing_average:latest"
     + operation_system: Your operating system, it is already set to "windows" or "unix"
 

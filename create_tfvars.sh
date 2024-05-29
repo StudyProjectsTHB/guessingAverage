@@ -19,7 +19,7 @@ aws_credentials = {
 github_credentials = {
   "github_token": "YOUR_GITHUB_TOKEN",
   "github_repository": "guessingAverage",
-  "github_repository_owner": "eineOrganisation",
+  "github_repository_owner": "StudyProjectsTHB",
 }
 
 docker_credentials = {

@@ -20,7 +20,7 @@ if exist "%FilePath%" (
     echo github_credentials = {
     echo   "github_token": "YOUR_GITHUB_TOKEN",
     echo   "github_repository": "guessingAverage",
-    echo   "github_repository_owner": "eineOrganisation",
+    echo   "github_repository_owner": "StudyProjectsTHB",
     echo }
     echo.
     echo docker_credentials = {
